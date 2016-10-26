@@ -1,4 +1,4 @@
-export class MainState extends Phaser.State {
+export class PlayState extends Phaser.State {
   init() {
     // add init code
     this.screenWidth = this.game.width;
@@ -12,17 +12,12 @@ export class MainState extends Phaser.State {
     this.game.load.image('apple', 'assets/fruit.png');
   }
   create() {
-    this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.cursor = this.game.input.keyboard.createCursorKeys();
     // create a player
     this.player = this.game.add.sprite(30, this.screenHeight - 100, 'player');
     this.player.anchor.setTo(0.5, 0.5);
     this.player.scale.setTo(0.05, 0.05);
     this.game.physics.arcade.enable(this.player);
-    // this.enemy1 = this.game.add.sprite(10, 10, 'fruit');
-    // this.enemy1.scale.setTo(0.03, 0.03);
-    // this.game.physics.arcade.enable(this.enemy1);
-    // this.enemy1.body.gravity.y = 100;
     this.fruits = this.game.add.group();
     this.fruits.enableBody = true;
     this.game.time.events.loop(100, this.spawnFruits, this);
@@ -65,11 +60,10 @@ export class MainState extends Phaser.State {
   takeFruit(player, fruit) {
     const playerPositon = player.body.position;
     const fruitPosition = fruit.position;
-    if (fruitPosition.x > playerPositon.x + player.body.halfWidth) {
-      fruit.kill();
-      this.score += 5;
-      this.scoreLabel.text = `score: ${this.score}`;
-    }
+    fruit.kill();
+    this.score += 5;
+    this.scoreLabel.text = `score: ${this.score}`;
+    // if (fruitPosition.x > playerPositon.x + player.body.halfWidth) {}
   }
 }
 
