@@ -20,7 +20,7 @@ var config = {
       __API_ROOT__: JSON.stringify(process.env.API_ROOT || 'http://120.25.56.235:3001'),
       __CANVAS_W__: JSON.stringify(414),
       __CANVAS_H__: JSON.stringify(736),
-      __BG_COLOR__: JSON.stringify('0x9BBC0F'),
+      __BG_COLOR__: JSON.stringify('0xFFFFFF'),
       __FG_COLOR__: JSON.stringify('0x0F380F'),
     }),
   ],

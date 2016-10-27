@@ -2,6 +2,8 @@ import { BootState } from 'states/BootState';
 import { LoadState } from 'states/LoadState';
 import { PlayState } from 'states/PlayState';
 import { MenuState } from 'states/MenuState';
+import { RegulationState } from 'states/RegulationState';
+import { ResultState } from 'states/ResultState';
 
 
 export class Game extends Phaser.Game {
@@ -11,6 +13,8 @@ export class Game extends Phaser.Game {
     this.state.add('load', new LoadState());
     this.state.add('play', new PlayState());
     this.state.add('menu', new MenuState());
+    this.state.add('result', new ResultState());
+    this.state.add('regulation', new RegulationState());
     this.state.start('boot');
   }
 }

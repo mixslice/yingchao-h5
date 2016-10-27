@@ -3,6 +3,7 @@ export class BootState extends Phaser.State {
     // add init code
   }
   preload() {
+    this.game.load.image('progressBar', 'assets/progressBar.png');
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.stage.backgroundColor = __BG_COLOR__;
   }
