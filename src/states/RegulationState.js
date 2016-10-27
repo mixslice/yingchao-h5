@@ -25,7 +25,7 @@ export class RegulationState extends Phaser.State {
     this.themeDetail.loadTexture('gameRegulation');
     this.arrowButton.kill();
   // this.game.state.start('regulation');
-    const startButton = this.game.add.button(this.game.world.centerX, this.game.world.height - 60, 'startButton', this.startGame, this, 0.01, 1, 0);
+    const startButton = this.game.add.button(this.game.world.centerX, this.game.world.height * 0.92, 'startButton', this.startGame, this, 0.01, 1, 0);
     startButton.anchor.setTo(0.5, 0.5);
     startButton.scale.setTo(0.5, 0.5);
   }

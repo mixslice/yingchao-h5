@@ -23,10 +23,26 @@ export class LoadState extends Phaser.State {
     this.game.load.image('gameWin', 'assets/gameWin.png');
     this.game.load.image('gameFail', 'assets/gameFail.png');
     this.game.load.image('celebration', 'assets/celebration.png');
-    this.game.load.image('rank', 'assets/rank.png');
+    this.game.load.image('backgroundInfo', 'assets/backgroundInfo.png');
+    this.game.load.image('squareLabel', 'assets/squareLabel.png');
+    this.game.load.image('rankbar', 'assets/rankbar.png');
+    this.game.load.image('awardDetail', 'assets/awardDetail.png');
+    this.game.load.image('scoreLabel', 'assets/scoreLabel.png');
+    this.game.load.image('pentacle', 'assets/pentacle.png');
+    this.game.load.image('picHolder', 'assets/picHolder.png');
+
     this.game.load.audio('successSound', 'assets/success.wav');
     this.game.load.audio('failSound', 'assets/fail.wav');
     this.game.load.audio('background', 'assets/background.mp3');
+
+    this.game.load.spritesheet('closeButton', 'assets/close.png');
+    this.game.load.spritesheet('shareToFriends', 'assets/shareToFriends.png');
+    this.game.load.spritesheet('getCoupon', 'assets/getCoupon.png');
+    this.game.load.spritesheet('couponButton', 'assets/coupon.png');
+    this.game.load.spritesheet('findAwardsButton', 'assets/findAwards.png');
+    this.game.load.spritesheet('challengeButton', 'assets/challenge.png');
+    this.game.load.spritesheet('share', 'assets/share.png');
+    this.game.load.spritesheet('shareScoreButton', 'assets/shareScore.png');
     this.game.load.spritesheet('arrowButton', 'assets/arrow.png');
     this.game.load.spritesheet('startButton', 'assets/start.png');
   }

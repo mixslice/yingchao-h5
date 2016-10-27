@@ -1,3 +1,8 @@
+import 'isomorphic-fetch';
+import { polyfill } from 'es6-promise';
+
+polyfill();
+
 export class ResultState extends Phaser.State {
   init() {
     // add init code
@@ -25,6 +30,30 @@ export class ResultState extends Phaser.State {
     this.celebration = this.game.add.sprite(randomPosition, 0, 'celebration');
   }
   goToRank() {
-    this.game.state.start('rank');
+    // post score and get game data
+    const scoreFormData = new FormData();
+    scoreFormData.append('score', this.game.global.score);
+    fetch(`${__API_ROOT__}/game/rank/record/1?openid=test_123`, {
+      method: 'POST',
+      body: scoreFormData,
+    })
+    .then(response => response.json())
+    .then((json) => {
+      if (json.errcode) {
+        return console.error('upload score failed');
+      }
+      this.game.global.scoreId = json.game_id;
+      return null;
+    })
+    .then(() => fetch(`${__API_ROOT__}/game/rank/1`))
+    .then(response => response.json())  
+    .then((json) => {
+      if (json.errcode) {
+        return console.error('upload score failed');
+      }
+      this.game.global.randData = json;
+      return this.game.state.start('rank');
+    })
+    .catch(e => console.log('upload failed', e));
   }
 }

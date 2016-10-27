@@ -5,7 +5,9 @@ import { MenuState } from 'states/MenuState';
 import { RegulationState } from 'states/RegulationState';
 import { ResultState } from 'states/ResultState';
 import { RankState } from 'states/RankState';
-
+import { ShareState } from 'states/ShareState';
+import { CouponState } from 'states/CouponState';
+import { AwardState } from 'states/AwardState';
 
 export class Game extends Phaser.Game {
   constructor() {
@@ -17,6 +19,10 @@ export class Game extends Phaser.Game {
     this.state.add('result', new ResultState());
     this.state.add('regulation', new RegulationState());
     this.state.add('rank', new RankState());
+    this.state.add('share', new ShareState());
+    this.state.add('coupon', new CouponState());
+    this.state.add('award', new AwardState());
+    
     this.state.start('boot');
   }
 }

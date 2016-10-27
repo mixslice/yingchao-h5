@@ -29,7 +29,9 @@
     "__CANVAS_W__": true,
     "__CANVAS_H__": true,  
     "__BG_COLOR__": true,
-    "__FG_COLOR__": true
+    "__FG_COLOR__": true,
+    "__API_ROOT__": true
   },
 }
+
 

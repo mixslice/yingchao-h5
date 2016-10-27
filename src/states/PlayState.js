@@ -5,7 +5,6 @@ export class PlayState extends Phaser.State {
     this.screenHeight = this.game.height;
     this.difficult = 10;
     console.log(this.game.global);
-    this.game.global = { score: 0 };
     this.passScore = 200;
   }
   create() {

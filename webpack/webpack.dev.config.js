@@ -17,10 +17,10 @@ var config = {
       __VERSION__: JSON.stringify(process.env.npm_package_version),
       __DEV__: true,  // <-------- DISABLE redux-devtools HERE
       __LOG_LEVEL__: JSON.stringify(process.env.LOG_LEVEL || 'trace'),
-      __API_ROOT__: JSON.stringify(process.env.API_ROOT || 'http://120.25.56.235:3001'),
+      __API_ROOT__: JSON.stringify(process.env.API_ROOT || 'http://lightapp.gsj987.cn'),
       __CANVAS_W__: JSON.stringify(414),
       __CANVAS_H__: JSON.stringify(736),
-      __BG_COLOR__: JSON.stringify('0xFFFFFF'),
+      __BG_COLOR__: JSON.stringify('0x9BBC0F'),
       __FG_COLOR__: JSON.stringify('0x0F380F'),
     }),
   ],

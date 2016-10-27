@@ -8,7 +8,7 @@ export class MenuState extends Phaser.State {
     // titleLabel.anchor.setTo(0.5, 0.5);
     const upKey = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
     upKey.onDown.add(this.start, this);
-    const button = this.game.add.button(this.game.world.centerX, this.game.world.height - 60, 'startButton', this.start, this, 0.01, 1, 0);
+    const button = this.game.add.button(this.game.world.centerX, this.game.world.height * 0.92, 'startButton', this.start, this, 0.01, 1, 0);
     button.anchor.setTo(0.5, 0.5);
     button.scale.setTo(0.5, 0.5);
   }
