@@ -9,6 +9,12 @@ export class PlayState extends Phaser.State {
     this.passScore = 200;
   }
   create() {
+    // music goes
+    this.backgroundMusic = this.game.add.audio('background');
+    this.backgroundMusic.loop = true;
+    this.backgroundMusic.play();
+    this.backgroundMusic.fadeIn('0.5');
+    this.backgroundMusic.fadeOut('0.5');
     // create world
     const background = this.game.add.image(0, 0, 'backgroundGame');
     background.scale.setTo(this.game.width / background.texture.width, this.game.height / background.texture.height);
@@ -149,8 +155,9 @@ export class PlayState extends Phaser.State {
     // }
   }
   takeBomb(player, bomb) {
+    // end the background music
+    this.backgroundMusic.stop();
     console.log('play music');
     this.game.state.start('result');
   }
 }
-
