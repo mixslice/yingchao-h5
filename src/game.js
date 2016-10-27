@@ -4,6 +4,7 @@ import { PlayState } from 'states/PlayState';
 import { MenuState } from 'states/MenuState';
 import { RegulationState } from 'states/RegulationState';
 import { ResultState } from 'states/ResultState';
+import { RankState } from 'states/RankState';
 
 
 export class Game extends Phaser.Game {
@@ -15,6 +16,7 @@ export class Game extends Phaser.Game {
     this.state.add('menu', new MenuState());
     this.state.add('result', new ResultState());
     this.state.add('regulation', new RegulationState());
+    this.state.add('rank', new RankState());
     this.state.start('boot');
   }
 }

@@ -1,7 +1,7 @@
 export class ResultState extends Phaser.State {
   init() {
     // add init code
-    this.successPoints = 200;
+    this.successPoints = 2;
     this.status = Number(this.game.global.score || 0) >= this.successPoints;    
   }
   create() {
@@ -15,6 +15,7 @@ export class ResultState extends Phaser.State {
       const randomDelay = this.game.rnd.integerInRange(200, 300);
       this.game.time.events.loop(randomDelay, this.animation, this);
     }
+    this.game.time.events.add(2000, this.goToRank, this);
   }
   animation() {
     if (this.celebration) {
@@ -24,6 +25,6 @@ export class ResultState extends Phaser.State {
     this.celebration = this.game.add.sprite(randomPosition, 0, 'celebration');
   }
   goToRank() {
-
+    this.game.state.start('rank');
   }
 }
