@@ -45,6 +45,7 @@
     "moment": "^2.15.2",
     "phaser": "^2.6.2",
     "pixi.js": "^4.1.0",
-    "style-loader": "^0.13.1"
+    "style-loader": "^0.13.1",
+    "uuid": "^2.0.3"
   }
 }

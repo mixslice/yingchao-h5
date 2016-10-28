@@ -1,14 +1,14 @@
 import 'isomorphic-fetch';
 import { polyfill } from 'es6-promise';
-import { getQueryStringValue } from 'utils';
+import { getQueryStringValue, getRamdomRequest } from 'utils';
 
 polyfill();
 
-const shareAppMessage = (wx, link = '') => {
+const shareAppMessage = (wx) => {
   wx.onMenuShareAppMessage({
     title: '饿肚就蓝瘦，嘴馋就香菇。我是最强小吃货，快来挑战我~',
     desc: '饿肚就蓝瘦，嘴馋就香菇。我是最强小吃货，快来挑战我~',
-    link,
+    link: 'http://ujoy.ramytech.com/sause-rank/',
     imgUrl: `${__ASSET_DIR__}/sharePic.jpg`,
     type: '', // 分享类型,music、video或link，不填默认为link
     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -19,10 +19,10 @@ const shareAppMessage = (wx, link = '') => {
   });
 };
 
-const shareTimeLine = (wx, link = '') => {
+const shareTimeLine = (wx) => {
   wx.onMenuShareTimeline({
     title: '饿肚就蓝瘦，嘴馋就香菇。我是最强小吃货，快来挑战我~',
-    link,
+    link: 'http://ujoy.ramytech.com/sause-rank/',
     imgUrl: `${__ASSET_DIR__}/sharePic.jpg`,
     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
     success: () => {
@@ -39,7 +39,7 @@ export class BootState extends Phaser.State {
     const userCode = getQueryStringValue('code') || '';
     // init wechat jssdk
     const currentUrl = location.href.split('#')[0];
-    fetch(`${__API_ROOT__}/weixin/jsapi_config/1?url=${currentUrl}`)
+    fetch(`${__API_ROOT__}/weixin/jsapi_config/1?url=${encodeURIComponent(currentUrl)}`)
     .then(response => response.json())
     .then((json) => {
       if (json.errcode) {
@@ -54,8 +54,8 @@ export class BootState extends Phaser.State {
         jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ'],
       });
       wx.ready(() => {
-        shareAppMessage(wx, currentUrl);
-        shareTimeLine(wx, currentUrl);
+        shareAppMessage(wx);
+        shareTimeLine(wx);
       });
     });
     // add data analtics
@@ -81,14 +81,11 @@ export class BootState extends Phaser.State {
   }
   preload() {
     this.game.load.crossOrigin = __ASSET_DIR__;
-    this.game.load.image('progressBar', `${__ASSET_DIR__}/progressBar.png`);    
+    this.game.load.image('progressBar', getRamdomRequest(`${__ASSET_DIR__}/progressBar.png`));
     const loadingLabel = this.game.add.text(this.game.width / 2, (this.game.height / 2) - 30, '正在加载...', { font: '30px Arial', fill: '#ffffff' });
     loadingLabel.anchor.setTo(0.5, 0.5);
-    const progressBar = this.game.add.sprite(this.game.width / 2, this.game.height / 2, 'progressBar');
-    progressBar.anchor.setTo(0.5, 0.5);
-    this.game.load.setPreloadSprite(progressBar);
-    this.game.load.image('home', `${__ASSET_DIR__}/home.png`);
-    this.game.load.spritesheet('startButton', `${__ASSET_DIR__}/start.png`);
+    this.game.load.image('home', getRamdomRequest(`${__ASSET_DIR__}/home.png`));
+    this.game.load.spritesheet('startButton', getRamdomRequest(`${__ASSET_DIR__}/start.png`));
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.stage.backgroundColor = __BG_COLOR__;
