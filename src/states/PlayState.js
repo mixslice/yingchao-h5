@@ -10,6 +10,7 @@ export class PlayState extends Phaser.State {
   create() {
     // music goes
     this.backgroundMusic = this.game.add.audio('background');
+    this.explodeMusic = this.game.add.audio('explode');
     this.backgroundMusic.loop = true;
     this.backgroundMusic.play();
     this.backgroundMusic.fadeIn('0.5');
@@ -164,11 +165,17 @@ export class PlayState extends Phaser.State {
     // }
   }
   takeBomb(player) {
-    // end the background music
+    // sound die
+    this.explodeMusic.play();
+    player.kill();
     this.emitter.x = player.x;
     this.emitter.y = player.y;
     this.emitter.start(true, 200, null, 15);
+    // end the background music    
     this.backgroundMusic.stop();
+    this.game.time.events.add(500, this.startResult, this);    
+  }
+  startResult() {
     this.game.state.start('result');
   }
 }

@@ -4,9 +4,60 @@ import { getQueryStringValue } from 'utils';
 
 polyfill();
 
+const shareAppMessage = (wx) => {
+  wx.onMenuShareAppMessage({
+    title: '抑制不住体内的洪荒之力，我居然坚持了这么久！你能比我更逆天吗',
+    desc: '现在注册飞利浦健康生活官方微信即可获取积分,获取好礼',
+    link: '',
+    imgUrl: '',
+    type: '', // 分享类型,music、video或link，不填默认为link
+    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+    success: () => {
+    },
+    cancel: () => {
+    }
+  });
+};
+
+const shareTimeLine = (wx) => {
+  wx.onMenuShareTimeline({
+    title: '抑制不住体内的洪荒之力，我居然坚持了这么久！你能比我更逆天吗',
+    link: '',
+    imgUrl: '',
+    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+    success: () => {
+      // alert('success');
+    },
+    cancel: () => {
+      // alert('cancel');
+    }
+  });
+};
+
 export class BootState extends Phaser.State {
   init() {
     const userCode = getQueryStringValue('code') || '';
+    // init wechat jssdk
+    const currentUrl = location.href.split('#')[0];
+    fetch(`${__API_ROOT__}/weixin/jsapi_config/1?url=${currentUrl}`)
+    .then(response => response.json())
+    .then((json) => {
+      if (json.errcode) {
+        return console.error('upload score failed', json.errmsg);
+      }
+      wx.config({
+        debug: true,
+        appId: json.appid,
+        timestamp: json.timestamp,
+        nonceStr: json.noncestr,
+        signature: json.signature,
+        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ'],
+      });
+      wx.ready(() => {
+        shareAppMessage(wx);
+        shareTimeLine(wx);
+      });
+    });
     // add data analtics
     fetch(`${__API_ROOT__}/info/statistics/1`);
     this.game.global = {
@@ -22,7 +73,7 @@ export class BootState extends Phaser.State {
       if (json.errcode) {
         return console.error('upload score failed', json.errmsg);
       }
-      this.game.global.openId = json.openId;
+      this.game.global.openId = json.openid;
     });
 
     // add wechat debug

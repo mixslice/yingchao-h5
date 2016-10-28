@@ -36,6 +36,8 @@ export class LoadState extends Phaser.State {
     this.game.load.audio('successSound', 'assets/success.wav');
     this.game.load.audio('failSound', 'assets/fail.wav');
     this.game.load.audio('background', 'assets/background.mp3');
+    this.game.load.audio('explode', 'assets/explode.mp3');
+
 
     this.game.load.spritesheet('closeButton', 'assets/close.png');
     this.game.load.spritesheet('shareToFriends', 'assets/shareToFriends.png');
