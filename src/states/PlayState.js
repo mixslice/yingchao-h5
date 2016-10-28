@@ -85,7 +85,7 @@ export class PlayState extends Phaser.State {
   }
   render() {
     // for debug
-    this.game.debug.text('Elapsed seconds: ' + this.game.time.totalElapsedSeconds(), 32, 32);
+    this.game.debug.text('当前时间: ' + this.game.time.totalElapsedSeconds(), 32, 32);
   }
   addDifficult() {
     this.difficult += 1;

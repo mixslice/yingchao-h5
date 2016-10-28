@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const WebpackConfig = require('webpack-config');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const node_modules_dir = path.resolve(__dirname, '../node_modules');
 const phaserModule = path.join(__dirname, '../node_modules/phaser/');
 const phaser = path.join(phaserModule, 'build/custom/phaser-split.js');
@@ -20,9 +19,6 @@ const config = {
     // publicPath: '/static/',
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './index.html',
-    }),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')

@@ -1,16 +1,18 @@
 var webpack = require('webpack');
 var WebpackConfig = require('webpack-config');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var config = {
-  content: __dirname,
-  devtool: '#cheap-module-inline-eval-source-map',
-  watch: true,
+  debug: false,
   entry: [
-    `webpack-dev-server/client?http://localhost:${process.env.DEV_SERVER_PORT || 3000}`,
-    'webpack/hot/only-dev-server',
     './src/index',
   ],
   plugins: [
+    new HtmlWebpackPlugin({
+      filename: '../index.html',
+      template: 'src/index.html',
+      hash: true,
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
