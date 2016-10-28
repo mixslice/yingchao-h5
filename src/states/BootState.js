@@ -4,12 +4,12 @@ import { getQueryStringValue } from 'utils';
 
 polyfill();
 
-const shareAppMessage = (wx) => {
+const shareAppMessage = (wx, link = '') => {
   wx.onMenuShareAppMessage({
-    title: '抑制不住体内的洪荒之力，我居然坚持了这么久！你能比我更逆天吗',
-    desc: '现在注册飞利浦健康生活官方微信即可获取积分,获取好礼',
-    link: '',
-    imgUrl: '',
+    title: '饿肚就蓝瘦，嘴馋就香菇。我是最强小吃货，快来挑战我~',
+    desc: '饿肚就蓝瘦，嘴馋就香菇。我是最强小吃货，快来挑战我~',
+    link,
+    imgUrl: `${__ASSET_DIR__}/sharePic.jpg`,
     type: '', // 分享类型,music、video或link，不填默认为link
     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
     success: () => {
@@ -19,11 +19,11 @@ const shareAppMessage = (wx) => {
   });
 };
 
-const shareTimeLine = (wx) => {
+const shareTimeLine = (wx, link = '') => {
   wx.onMenuShareTimeline({
-    title: '抑制不住体内的洪荒之力，我居然坚持了这么久！你能比我更逆天吗',
-    link: '',
-    imgUrl: '',
+    title: '饿肚就蓝瘦，嘴馋就香菇。我是最强小吃货，快来挑战我~',
+    link,
+    imgUrl: `${__ASSET_DIR__}/sharePic.jpg`,
     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
     success: () => {
       // alert('success');
@@ -43,7 +43,7 @@ export class BootState extends Phaser.State {
     .then(response => response.json())
     .then((json) => {
       if (json.errcode) {
-        return console.error('upload score failed', json.errmsg);
+        return console.error('get jsspi failed', json.errmsg);
       }
       wx.config({
         debug: true,
@@ -54,8 +54,8 @@ export class BootState extends Phaser.State {
         jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ'],
       });
       wx.ready(() => {
-        shareAppMessage(wx);
-        shareTimeLine(wx);
+        shareAppMessage(wx, currentUrl);
+        shareTimeLine(wx, currentUrl);
       });
     });
     // add data analtics

@@ -22,7 +22,6 @@ export class Game extends Phaser.Game {
     this.state.add('share', new ShareState());
     this.state.add('coupon', new CouponState());
     this.state.add('award', new AwardState());
-    
     this.state.start('boot');
   }
 }
