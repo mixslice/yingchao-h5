@@ -22,6 +22,7 @@ var config = {
       __CANVAS_H__: JSON.stringify(736),
       __BG_COLOR__: JSON.stringify('0x9BBC0F'),
       __FG_COLOR__: JSON.stringify('0x0F380F'),
+      __ASSET_DIR__: JSON.stringify('http://7oxin3.com1.z0.glb.clouddn.com/saucerank'),
     }),
   ],
 };
