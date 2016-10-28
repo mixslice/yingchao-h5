@@ -54,8 +54,8 @@ export class BootState extends Phaser.State {
         jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ'],
       });
       wx.ready(() => {
-        shareAppMessage(wx, currentUrl);
-        shareTimeLine(wx, currentUrl);
+        shareAppMessage(wx, json.url);
+        shareTimeLine(wx, json.url);
       });
     });
     // add data analtics
@@ -71,8 +71,9 @@ export class BootState extends Phaser.State {
     .then(response => response.json())
     .then((json) => {
       if (json.errcode) {
-        return console.error('upload score failed', json.errmsg);
+        return console.error('get userinfo failed', json.errmsg);
       }
+      alert(JSON.stringify(json));
       this.game.global.openId = json.openid;
     });
 
