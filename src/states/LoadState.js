@@ -30,6 +30,8 @@ export class LoadState extends Phaser.State {
     this.game.load.image('scoreLabel', 'assets/scoreLabel.png');
     this.game.load.image('pentacle', 'assets/pentacle.png');
     this.game.load.image('picHolder', 'assets/picHolder.png');
+    this.game.load.image('encourageText', 'assets/encourageText.png');
+    this.game.load.image('pixel', 'assets/pixel.png');
 
     this.game.load.audio('successSound', 'assets/success.wav');
     this.game.load.audio('failSound', 'assets/fail.wav');

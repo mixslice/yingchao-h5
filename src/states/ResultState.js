@@ -51,7 +51,7 @@ export class ResultState extends Phaser.State {
       if (json.errcode) {
         return console.error('upload score failed');
       }
-      this.game.global.randData = json;
+      this.game.global.rankData = json;
       return this.game.state.start('rank');
     })
     .catch(e => console.log('upload failed', e));

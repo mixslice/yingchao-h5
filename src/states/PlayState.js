@@ -50,6 +50,13 @@ export class PlayState extends Phaser.State {
     // add enemies
     this.enemies = this.game.add.group();
     this.enemies.enableBody = true;
+    // add emitter
+    this.emitter = this.game.add.emitter(0, 0, 100);
+    this.emitter.makeParticles('pixel');
+    this.emitter.setYSpeed(-150, 150);
+    this.emitter.setXSpeed(-150, 150);
+    this.emitter.setScale(2, 0, 2, 0, 800);
+    this.emitter.gravity = 0;
     // random generate fruits
     const randomDelayFruits = this.game.rnd.integerInRange(80, 150);
     const randomDelayEnemies = this.game.rnd.integerInRange(200, 300);
@@ -67,10 +74,10 @@ export class PlayState extends Phaser.State {
     // add key listener
     this.movePlayerByKeys();
   }
-  render() {
-    // for debug
-    // this.game.debug.inputInfo(30, 240);
-  }
+  // render() {
+  //   // for debug
+  //   // this.game.debug.inputInfo(30, 240);
+  // }
   onDragFixY(item) {
     if (item.previousPosition.y !== item.y) {
       item.y = item.previousPosition.y;
@@ -144,6 +151,9 @@ export class PlayState extends Phaser.State {
     const fruitPosition = fruit.position;
     // console.log(player, fruit);
     fruit.kill();
+    this.emitter.x = fruit.x;
+    this.emitter.y = fruit.y;
+    this.emitter.start(true, 50, null, 15);
     this.game.global.score += fruit.data.points;
     this.scoreLabel.text = this.game.global.score;
     // if (fruitPosition.x > playerPositon.x + player.body.halfWidth
@@ -153,10 +163,12 @@ export class PlayState extends Phaser.State {
     //   this.scoreLabel.text = `score: ${this.score}`;
     // }
   }
-  takeBomb(player, bomb) {
+  takeBomb(player) {
     // end the background music
+    this.emitter.x = player.x;
+    this.emitter.y = player.y;
+    this.emitter.start(true, 200, null, 15);
     this.backgroundMusic.stop();
-    console.log('play music');
     this.game.state.start('result');
   }
 }
