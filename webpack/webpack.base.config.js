@@ -17,7 +17,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, '../dist/static'),
     filename: 'bundle.js',
-    publicPath: '/static/',
+    // publicPath: '/static/',
   },
   plugins: [
     new HtmlWebpackPlugin({

@@ -1,10 +1,9 @@
 export class LoadState extends Phaser.State {
   preload() {
-    const loadingLabel = this.game.add.text(this.game.width / 2, (this.game.height / 2) - 30, 'loading...', { font: '30px Arial', fill: '#ffffff' });
+    const loadingLabel = this.game.add.text(this.game.width / 2, (this.game.height / 2) - 30, '正在加载游戏中...', { font: '30px Arial', fill: '#ffffff' });
     loadingLabel.anchor.setTo(0.5, 0.5);
     const progressBar = this.game.add.sprite(this.game.width / 2, this.game.height / 2, 'progressBar');
     progressBar.anchor.setTo(0.5, 0.5);
-    this.game.load.crossOrigin = __ASSET_DIR__;
     this.game.load.setPreloadSprite(progressBar);
     this.game.load.image('playerL', `${__ASSET_DIR__}/tigerLeft.png`);
     this.game.load.image('playerR', `${__ASSET_DIR__}/tigerRight.png`);
@@ -13,7 +12,6 @@ export class LoadState extends Phaser.State {
     this.game.load.image('pepper', `${__ASSET_DIR__}/pepper.png`);
     this.game.load.image('shallot', `${__ASSET_DIR__}/shallot.png`);
     this.game.load.image('pectinid', `${__ASSET_DIR__}/pectinid.png`);
-    this.game.load.image('home', `${__ASSET_DIR__}/home.png`);
     this.game.load.image('road', `${__ASSET_DIR__}/road.png`);
     this.game.load.image('house', `${__ASSET_DIR__}/house.png`);
     this.game.load.image('pointsBar', `${__ASSET_DIR__}/pointsBar.png`);
@@ -49,12 +47,11 @@ export class LoadState extends Phaser.State {
     this.game.load.spritesheet('share', `${__ASSET_DIR__}/share.png`);
     this.game.load.spritesheet('shareScoreButton', `${__ASSET_DIR__}/shareScore.png`);
     this.game.load.spritesheet('arrowButton', `${__ASSET_DIR__}/arrow.png`);
-    this.game.load.spritesheet('startButton', `${__ASSET_DIR__}/start.png`);
   }
   create() {
     this.loadingText = this.game.add.text(this.game.world.centerX,
     this.game.world.height / 2, '正在加载中ing');
     this.loadingText.anchor.setTo(0.5);
-    this.game.state.start('menu');
+    this.game.state.start('regulation');
   }
 }

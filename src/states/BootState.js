@@ -79,13 +79,22 @@ export class BootState extends Phaser.State {
     // add wechat debug
   }
   preload() {
-    this.game.load.image('progressBar', 'assets/progressBar.png');
+    this.game.load.crossOrigin = __ASSET_DIR__;
+    this.game.load.image('progressBar', `${__ASSET_DIR__}/progressBar.png`);    
+    const loadingLabel = this.game.add.text(this.game.width / 2, (this.game.height / 2) - 30, '正在加载...', { font: '30px Arial', fill: '#ffffff' });
+    loadingLabel.anchor.setTo(0.5, 0.5);
+    const progressBar = this.game.add.sprite(this.game.width / 2, this.game.height / 2, 'progressBar');
+    progressBar.anchor.setTo(0.5, 0.5);
+    this.game.load.setPreloadSprite(progressBar);
+    this.game.load.image('home', `${__ASSET_DIR__}/home.png`);
+    this.game.load.spritesheet('startButton', `${__ASSET_DIR__}/start.png`);
+
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.stage.backgroundColor = __BG_COLOR__;
   }
   create() {
     // add create code
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.game.state.start('load');
+    this.game.state.start('menu');
   }
 }

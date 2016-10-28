@@ -13,6 +13,6 @@ export class MenuState extends Phaser.State {
     button.scale.setTo(0.5, 0.5);
   }
   start() {
-    this.game.state.start('regulation');
+    this.game.state.start('load');
   }
 }
