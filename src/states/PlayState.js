@@ -1,11 +1,13 @@
+import { getScaleRateX, getScaleRateY } from 'utils';
+
 export class PlayState extends Phaser.State {
   init() {
     // add init code
     this.screenWidth = this.game.width;
     this.screenHeight = this.game.height;
     this.difficult = 10;
-    console.log(this.game.global);
     this.passScore = 200;
+    this.halfScaleX = getScaleRateX(0.5, this.game.width);
   }
   create() {
     // music goes
@@ -23,7 +25,7 @@ export class PlayState extends Phaser.State {
     const roadScaleRate = this.game.width / road.texture.width;
     const pointsBar = this.game.add.image(this.game.width - 10, 20, 'pointsBar');
     pointsBar.anchor.setTo(1, 0);
-    pointsBar.scale.setTo(0.5, 0.5);
+    pointsBar.scale.setTo(this.halfScaleX, this.halfScaleX);
     this.scoreLabel = this.game.add.text(pointsBar.x - 10, pointsBar.y + 13, '0',
     { font: '18px Arial', fill: '#ffffff' });
     this.scoreLabel.anchor.setTo(1, 0);
@@ -39,7 +41,7 @@ export class PlayState extends Phaser.State {
     // create a player
     this.player = this.game.add.sprite(this.game.world.centerX, this.screenHeight - 100, 'playerR');
     this.player.anchor.setTo(0.5, 0.5);
-    this.player.scale.setTo(0.5, 0.5);
+    this.player.scale.setTo(this.halfScaleX, this.halfScaleX);
     // add drag event in item
     this.player.inputEnabled = true;
     this.player.input.enableDrag(true);
@@ -127,7 +129,7 @@ export class PlayState extends Phaser.State {
     const fruit = this.game.add.sprite(10 + Math.floor(Math.random() * 1000), 0, entity);
     this.fruits.add(fruit);
     fruit.anchor.setTo(0.5, 0.5);
-    fruit.scale.setTo(0.5, 0.5);
+    fruit.scale.setTo(this.halfScaleX, this.halfScaleX);
     this.game.physics.arcade.enable(fruit);
     fruit.body.gravity.y = randomWeight;
     fruit.checkWorldBounds = true;
@@ -139,7 +141,7 @@ export class PlayState extends Phaser.State {
     const randomWeight = this.game.rnd.integerInRange(600, 700);
     const enemy = this.game.add.sprite(10 + Math.floor(Math.random() * 1000), 0, 'bomb');
     this.enemies.add(enemy);
-    enemy.scale.setTo(0.5, 0.5);
+    enemy.scale.setTo(this.halfScaleX, this.halfScaleX);
     enemy.anchor.setTo(0.5, 0.5);
     this.game.physics.arcade.enable(enemy);
     enemy.body.gravity.y = randomWeight;
