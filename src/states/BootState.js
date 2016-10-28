@@ -46,7 +46,7 @@ export class BootState extends Phaser.State {
         return console.error('get jsspi failed', json.errmsg);
       }
       wx.config({
-        debug: true,
+        debug: false,
         appId: json.appid,
         timestamp: json.timestamp,
         nonceStr: json.noncestr,
@@ -54,8 +54,8 @@ export class BootState extends Phaser.State {
         jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ'],
       });
       wx.ready(() => {
-        shareAppMessage(wx, json.url);
-        shareTimeLine(wx, json.url);
+        shareAppMessage(wx, currentUrl);
+        shareTimeLine(wx, currentUrl);
       });
     });
     // add data analtics
