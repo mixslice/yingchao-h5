@@ -6,8 +6,8 @@ polyfill();
 export class ResultState extends Phaser.State {
   init() {
     // add init code
-    this.successPoints = 2;
-    this.status = Number(this.game.global.score || 0) >= this.successPoints;    
+    this.passScore = 200;
+    this.status = Number(this.game.global.score || 0) >= this.passScore;
   }
   create() {
     const backgroundMode = this.status ? 'gameWin' : 'gameFail';

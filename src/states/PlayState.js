@@ -1,12 +1,17 @@
 import { getScaleRateX, getScaleRateY } from 'utils';
 
+const getRangeByDifficult = (difficult) => {
+  const start = 500 - ((difficult - 1) * 50);
+  const end = start - 50;
+  return [start, end];
+};
+
 export class PlayState extends Phaser.State {
   init() {
     // add init code
     this.screenWidth = this.game.width;
     this.screenHeight = this.game.height;
-    this.difficult = 10;
-    this.passScore = 200;
+    this.difficult = 1;
     this.halfScaleX = getScaleRateX(0.5, this.game.width);
   }
   create() {
@@ -62,10 +67,11 @@ export class PlayState extends Phaser.State {
     this.emitter.gravity = 0;
     // random generate fruits
     const randomDelayFruits = this.game.rnd.integerInRange(80, 150);
-    const randomDelayEnemies = this.game.rnd.integerInRange(200, 300);
-    this.game.time.events.loop(randomDelayFruits, this.spawnFruits, this);
-    this.game.time.events.loop(randomDelayEnemies, this.spawnEnemies, this);
 
+    const randomDelayEnemies = this.game.rnd.integerInRange(...getRangeByDifficult(this.difficult));
+    this.game.time.events.loop(randomDelayFruits, this.spawnFruits, this);
+    this.generateEnemies = this.game.time.events.loop(randomDelayEnemies, this.spawnEnemies, this);
+    this.game.time.events.add(4000, this.addDifficult, this);
     // random generate enemies (todo)
   }
   update() {
@@ -77,10 +83,16 @@ export class PlayState extends Phaser.State {
     // add key listener
     this.movePlayerByKeys();
   }
-  // render() {
-  //   // for debug
-  //   // this.game.debug.inputInfo(30, 240);
-  // }
+  render() {
+    // for debug
+    this.game.debug.text('Elapsed seconds: ' + this.game.time.totalElapsedSeconds(), 32, 32);
+  }
+  addDifficult() {
+    this.difficult += 1;
+    const randomDelayEnemies = this.game.rnd.integerInRange(...getRangeByDifficult(this.difficult));    
+    this.game.time.events.remove(this.generateEnemies);
+    this.generateEnemies = this.game.time.events.loop(randomDelayEnemies, this.spawnEnemies, this);
+  }
   onDragFixY(item) {
     if (item.previousPosition.y !== item.y) {
       item.y = item.previousPosition.y;

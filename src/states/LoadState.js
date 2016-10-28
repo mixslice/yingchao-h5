@@ -1,4 +1,6 @@
 import { getRamdomRequest } from 'utils';
+import moment from 'moment';
+
 
 export class LoadState extends Phaser.State {
   preload() {
@@ -49,6 +51,7 @@ export class LoadState extends Phaser.State {
     this.game.load.spritesheet('share', getRamdomRequest(`${__ASSET_DIR__}/share.png`));
     this.game.load.spritesheet('shareScoreButton', getRamdomRequest(`${__ASSET_DIR__}/shareScore.png`));
     this.game.load.spritesheet('arrowButton', getRamdomRequest(`${__ASSET_DIR__}/arrow.png`));
+    document.cookie = `assetLoaded=true; expires=${moment().add(1, 'days').calendar()}`;
   }
   create() {
     this.loadingText = this.game.add.text(this.game.world.centerX,

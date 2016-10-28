@@ -7,7 +7,9 @@
     "clean": "rimraf dist",
     "build:webpack": "NODE_ENV=dev webpack --bail",
     "build": "npm run clean && npm run build:webpack",
+    "publish": "npm run build && npm run upload",
     "prebuild": "npm install",
+    "upload": "qshell fput ramytest saucerank/bundle.js dist/static/bundle.js true",
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -9,5 +9,11 @@ export const getScaleRateX = (rate, width) =>
 export const getScaleRateY = (rate, height) =>
 (height * rate) / 736;
 
-export const getRamdomRequest = (url) =>
-`${url}?random=${uuid.v1()}`;
+export const getRamdomRequest = (url) => {
+  if (document.cookie.indexOf('assetLoaded') > -1) {
+    return url;
+  }
+  return `${url}?random=${uuid.v1()}`;
+};
+
+
