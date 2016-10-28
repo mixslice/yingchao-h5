@@ -21,6 +21,7 @@
   },
   "globals": {
     "log": false,
+    "wx": false,
     "__DEV__": true,
     "__LOG_LEVEL__": true,
     "__VERSION__": false,
@@ -30,7 +31,7 @@
     "__CANVAS_H__": true,  
     "__BG_COLOR__": true,
     "__FG_COLOR__": true,
-    "__API_ROOT__": true
+    "__API_ROOT__": false,
   },
 }
 

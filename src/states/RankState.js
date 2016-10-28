@@ -15,10 +15,7 @@ export class RankState extends Phaser.State {
     rankBar.anchor.setTo(0.5, 0.5);
     rankBar.scale.setTo(0.5, 0.5);
     this.scoreRecords = this.game.add.group();
-    this.spwanRecordsByData(this.rankData, label, this.scoreId);
-    // const scoreLabel = this.game.add.image(this.game.world.centerX, offsetY, 'scoreLabel');
-    //   scoreLabel.anchor.setTo(0.5, 0.5);
-    //   scoreLabel.scale.setTo(0.62, 0.62);
+    this.spwanRecordsByData(this.rankData, label);
     // buttons
     const shareScoreButton = this.game.add.button(label.x - 20, (label.y + ((label.texture.height * 0.6) / 2)) - 60, 'shareScoreButton', this.share, this, 0.01, 1, 0);
     shareScoreButton.anchor.setTo(1, 0.5);
@@ -39,15 +36,11 @@ export class RankState extends Phaser.State {
     encourageText.anchor.setTo(0.5, 1);
     encourageText.scale.setTo(0.7, 0.7);
  }
-  spwanRecordsByData(data, label, scoreId) {
+  spwanRecordsByData(data, label) {
     const length = data.length;
-    const winLevel = (data.length - Number(scoreId)) / data.length;
-    console.log(winLevel);
     let offsetY = label.y * 0.5;
-    // if (length > 3) {
-    //   data.slice
-    // }
-    data.forEach((record, index) => {
+    const newData = length > 3 ? data.slice(0, 3) : data;
+    newData.forEach((record, index) => {
       const scoreLabel = this.game.add.image(this.game.world.centerX, offsetY, 'scoreLabel');
       scoreLabel.anchor.setTo(0.5, 0.5);
       scoreLabel.scale.setTo(0.62, 0.62);

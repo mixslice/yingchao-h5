@@ -67,15 +67,8 @@ const config = {
       'src',
       'node_modules',
     ],
-    extensions: ['', '.json', '.js' ]
+    extensions: ['', '.json', '.js' ],
   },
-  // devServer: {
-  //   host: "0.0.0.0",
-  //   port: "8000",
-  //   contentBase: './public',
-  //   hot: true,
-  //   historyApiFallback: true
-  // }
 };
 
 deps.forEach(function (dep) {
