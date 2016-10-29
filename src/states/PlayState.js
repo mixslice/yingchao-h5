@@ -43,7 +43,6 @@ export class PlayState extends Phaser.State {
     house.scale.setTo(houseScaleRate, houseScaleRate);
     // create sprites
     this.cursor = this.game.input.keyboard.createCursorKeys();
-    this.pointer = this.game.input.addPointer();
     // create a player
     this.player = this.game.add.sprite(this.game.world.centerX, this.game.height, 'playerR');
     this.player.anchor.setTo(0.5, 1);
@@ -169,8 +168,8 @@ export class PlayState extends Phaser.State {
     // console.log(player, fruit);
     fruit.kill();
     this.emitter.x = fruit.x;
-    this.emitter.y = fruit.y;
-    this.emitter.start(true, 50, null, 15);
+    this.emitter.y = fruit.y - (fruit.texture.height / 2);
+    this.emitter.start(true, 50, null, 23);
     this.game.global.score += fruit.data.points;
     this.scoreLabel.text = this.game.global.score;
     // if (fruitPosition.x > playerPositon.x + player.body.halfWidth
@@ -180,14 +179,16 @@ export class PlayState extends Phaser.State {
     //   this.scoreLabel.text = `score: ${this.score}`;
     // }
   }
-  takeBomb(player) {
+  takeBomb(player, enemy) {
     // sound die
     this.explodeMusic.play();
     this.emitter.x = player.x;
-    this.emitter.y = player.y;
-    this.emitter.start(true, 300, null, 15);
+    this.emitter.y = player.y - player.texture.height;
+    this.emitter.start(true, 300, null, 40);
     // end the background music    
     player.kill();
+    enemy.kill();
+    this.game.global.score = 0;
     this.backgroundMusic.stop();
     this.game.time.events.add(500, this.startResult, this);    
   }

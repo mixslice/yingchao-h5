@@ -17,6 +17,8 @@ export class RegulationState extends Phaser.State {
     this.arrowButton = this.game.add.button(this.game.width - this.buttonOffset1X, this.game.world.height / 2, 'arrowButton', this.nextPage, this, 0.01, 1, 0);
     this.arrowButton.anchor.setTo(1, 0.5);
     this.arrowButton.scale.setTo(this.halfScaleX, this.halfScaleX);
+
+    // this.game.input.touch.onTouchMove((e) => { console.log(e); });
   }
   nextPage() {
     this.themeDetail.loadTexture('gameRegulation');

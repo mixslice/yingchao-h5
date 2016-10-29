@@ -10,9 +10,9 @@ export const getScaleRateY = (rate, height) =>
 (height * rate) / 736;
 
 export const getRamdomRequest = (url) => {
-  if (sessionStorage.getItem('assetLoaded')) {
-    return url;
-  }
+  // if (sessionStorage.getItem('assetLoaded')) {
+  //   return url;
+  // }
   return `${url}?random=${uuid.v1()}`;
 };
 

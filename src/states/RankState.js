@@ -18,6 +18,7 @@ export class RankState extends Phaser.State {
     this.textOffset1X = getScaleRateX(15, this.game.width);
     this.textOffset2X = getScaleRateX(5, this.game.width);
     this.textOffset3X = getScaleRateX(74, this.game.width);
+    this.textOffset4X = getScaleRateX(24, this.game.width);
 
     this.buttonOffset1X = getScaleRateX(20, this.game.width);
     this.textOffset1Y = getScaleRateY(10, this.game.height);
@@ -80,8 +81,8 @@ export class RankState extends Phaser.State {
       scoreLabel.anchor.setTo(0.5, 0.5);
       scoreLabel.scale.setTo(this.biggerHalfScale2X, this.biggerHalfScale2X);
       offsetY = scoreLabel.y + ((scoreLabel.texture.height * this.biggerHalfScale2X) / 2) + this.textOffset2Y;
-      const pentacleX = scoreLabel.x - ((scoreLabel.texture.width * this.biggerHalfScale2X) / 2) + this.textOffset1Y;
-      const recordIndexX = pentacleX + ((this.textOffset3X * this.biggerHalfScaleX) / 4);
+      const pentacleX = this.game.world.centerX - ((scoreLabel.texture.width * this.biggerHalfScale2X) / 2) + this.textOffset4X;
+      const recordIndexX = pentacleX + (this.textOffset3X / 4);
       const recordIndex = this.game.add.text(recordIndexX, scoreLabel.y, index + 1,
     { font: `${getScaleRateX(28, this.game.width)}px Arial`, fill: '#ffffff' });
       recordIndex.anchor.setTo(1, 0.5);
