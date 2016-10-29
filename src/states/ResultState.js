@@ -33,7 +33,7 @@ export class ResultState extends Phaser.State {
     // post score and get game data
     const scoreFormData = new FormData();
     scoreFormData.append('score', this.game.global.score);
-    fetch(`${__API_ROOT__}/game/rank/record/1?openid=test_123`, {
+    fetch(`${__API_ROOT__}/game/rank/record/1?openid=${this.game.global.openId || 'test_123'}`, {
       method: 'POST',
       body: scoreFormData,
     })
@@ -42,7 +42,6 @@ export class ResultState extends Phaser.State {
       if (json.errcode) {
         return console.error('upload score failed');
       }
-      this.game.global.scoreId = json.game_id;
       return null;
     })
     .then(() => fetch(`${__API_ROOT__}/game/rank/1`))
@@ -51,7 +50,7 @@ export class ResultState extends Phaser.State {
       if (json.errcode) {
         return console.error('upload score failed');
       }
-      this.game.global.rankData = json;
+      this.game.global.rankData = json || {};
       return this.game.state.start('rank');
     })
     .catch(e => console.log('upload failed', e));

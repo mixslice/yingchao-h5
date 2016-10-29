@@ -1,7 +1,7 @@
 import { getScaleRateX, getScaleRateY } from 'utils';
 
 const getRangeByDifficult = (difficult) => {
-  const start = 500 - ((difficult - 1) * 50);
+  const start = 600 - ((difficult - 1) * 20);
   const end = start - 50;
   return [start, end];
 };
@@ -13,6 +13,7 @@ export class PlayState extends Phaser.State {
     this.screenHeight = this.game.height;
     this.difficult = 1;
     this.halfScaleX = getScaleRateX(0.5, this.game.width);
+    this.textOffset1Y = getScaleRateY(10, this.game.height);
   }
   create() {
     // music goes
@@ -28,11 +29,11 @@ export class PlayState extends Phaser.State {
     const road = this.game.add.image(0, this.game.height, 'road');
     road.anchor.setTo(0, 1);
     const roadScaleRate = this.game.width / road.texture.width;
-    const pointsBar = this.game.add.image(this.game.width - 10, 20, 'pointsBar');
+    const pointsBar = this.game.add.image(this.game.width - this.textOffset1Y, 20, 'pointsBar');
     pointsBar.anchor.setTo(1, 0);
     pointsBar.scale.setTo(this.halfScaleX, this.halfScaleX);
-    this.scoreLabel = this.game.add.text(pointsBar.x - 10, pointsBar.y + 13, '0',
-    { font: '18px Arial', fill: '#ffffff' });
+    this.scoreLabel = this.game.add.text(pointsBar.x - this.textOffset1Y, pointsBar.y + getScaleRateY(13, this.game.height), '0',
+    { font: `${getScaleRateX(18, this.game.width)}px Arial`, fill: '#ffffff' });
     this.scoreLabel.anchor.setTo(1, 0);
     // road.anchor.setTo(0.5, 0.5);
     road.scale.setTo(roadScaleRate, roadScaleRate);
@@ -44,8 +45,8 @@ export class PlayState extends Phaser.State {
     this.cursor = this.game.input.keyboard.createCursorKeys();
     this.pointer = this.game.input.addPointer();
     // create a player
-    this.player = this.game.add.sprite(this.game.world.centerX, this.screenHeight - 100, 'playerR');
-    this.player.anchor.setTo(0.5, 0.5);
+    this.player = this.game.add.sprite(this.game.world.centerX, this.game.height, 'playerR');
+    this.player.anchor.setTo(0.5, 1);
     this.player.scale.setTo(this.halfScaleX, this.halfScaleX);
     // add drag event in item
     this.player.inputEnabled = true;
@@ -71,7 +72,7 @@ export class PlayState extends Phaser.State {
     const randomDelayEnemies = this.game.rnd.integerInRange(...getRangeByDifficult(this.difficult));
     this.game.time.events.loop(randomDelayFruits, this.spawnFruits, this);
     this.generateEnemies = this.game.time.events.loop(randomDelayEnemies, this.spawnEnemies, this);
-    this.game.time.events.add(4000, this.addDifficult, this);
+    this.game.time.events.loop(5000, this.addDifficult, this);
     // random generate enemies (todo)
   }
   update() {
@@ -83,13 +84,14 @@ export class PlayState extends Phaser.State {
     // add key listener
     this.movePlayerByKeys();
   }
-  render() {
-    // for debug
-    this.game.debug.text('当前时间: ' + this.game.time.totalElapsedSeconds(), 32, 32);
-  }
+  // render() {
+  //   // for debug
+  //   this.game.debug.text('当前时间: ' + this.game.time.totalElapsedSeconds(), 32, 32);
+  // }
   addDifficult() {
     this.difficult += 1;
-    const randomDelayEnemies = this.game.rnd.integerInRange(...getRangeByDifficult(this.difficult));    
+    const randomDelayEnemies = this.game.rnd.integerInRange(...getRangeByDifficult(this.difficult));
+    console.log('random', randomDelayEnemies);
     this.game.time.events.remove(this.generateEnemies);
     this.generateEnemies = this.game.time.events.loop(randomDelayEnemies, this.spawnEnemies, this);
   }
@@ -135,7 +137,7 @@ export class PlayState extends Phaser.State {
     };
 
     const randomFruitIndex = this.game.rnd.integerInRange(0, 3);
-    const randomWeight = this.game.rnd.integerInRange(500, 600);
+    const randomWeight = this.game.rnd.integerInRange(550, 850);
     
     const entity = Object.keys(fruitsMapWithWeight)[randomFruitIndex];
     const fruit = this.game.add.sprite(10 + Math.floor(Math.random() * 1000), 0, entity);
@@ -150,7 +152,7 @@ export class PlayState extends Phaser.State {
   }
 
   spawnEnemies() {
-    const randomWeight = this.game.rnd.integerInRange(600, 700);
+    const randomWeight = this.game.rnd.integerInRange(500, 900);
     const enemy = this.game.add.sprite(10 + Math.floor(Math.random() * 1000), 0, 'bomb');
     this.enemies.add(enemy);
     enemy.scale.setTo(this.halfScaleX, this.halfScaleX);
@@ -181,11 +183,11 @@ export class PlayState extends Phaser.State {
   takeBomb(player) {
     // sound die
     this.explodeMusic.play();
-    player.kill();
     this.emitter.x = player.x;
     this.emitter.y = player.y;
-    this.emitter.start(true, 200, null, 15);
+    this.emitter.start(true, 300, null, 15);
     // end the background music    
+    player.kill();
     this.backgroundMusic.stop();
     this.game.time.events.add(500, this.startResult, this);    
   }

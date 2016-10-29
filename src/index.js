@@ -7,5 +7,3 @@ require('phaser');
 const { Game } = require('./game');
 
 const startGame = new Game();
-// console.log('start', startGame);
-

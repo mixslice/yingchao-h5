@@ -11,7 +11,7 @@ import { AwardState } from 'states/AwardState';
 
 export class Game extends Phaser.Game {
   constructor() {
-    super('100%', '100%', Phaser.AUTO, 'game', null, false, false);
+    super(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.CANVAS, 'game', null, false, false);
     this.state.add('boot', new BootState());
     this.state.add('load', new LoadState());
     this.state.add('play', new PlayState());

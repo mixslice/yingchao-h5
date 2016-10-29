@@ -1,3 +1,5 @@
+import { getScaleRateY } from 'utils';
+
 export class MenuState extends Phaser.State {
   create() {
     const home = this.game.add.image(0, 0, 'home');
@@ -10,7 +12,7 @@ export class MenuState extends Phaser.State {
     upKey.onDown.add(this.start, this);
     const button = this.game.add.button(this.game.world.centerX, this.game.world.height * 0.92, 'startButton', this.start, this, 0.01, 1, 0);
     button.anchor.setTo(0.5, 0.5);
-    button.scale.setTo(0.5, 0.5);
+    button.scale.setTo(window.devicePixelRatio / 2, window.devicePixelRatio / 2);
   }
   start() {
     this.game.state.start('load');

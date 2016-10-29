@@ -1,14 +1,17 @@
 import 'isomorphic-fetch';
 import { polyfill } from 'es6-promise';
-import { getQueryStringValue, getRamdomRequest } from 'utils';
+import { getQueryStringValue, getRamdomRequest, getScaleRateY } from 'utils';
 
 polyfill();
 
-const shareAppMessage = (wx) => {
+const createOauthLink = (link, appid) => 
+`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(link)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
+
+const shareAppMessage = (wx, appid) => {
   wx.onMenuShareAppMessage({
     title: '饿肚就蓝瘦，嘴馋就香菇。我是最强小吃货，快来挑战我~',
     desc: '饿肚就蓝瘦，嘴馋就香菇。我是最强小吃货，快来挑战我~',
-    link: 'http://ujoy.ramytech.com/sause-rank/',
+    link: createOauthLink('http://ujoy.ramytech.com/sause-rank/', appid),
     imgUrl: `${__ASSET_DIR__}/sharePic.jpg`,
     type: '', // 分享类型,music、video或link，不填默认为link
     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -19,10 +22,10 @@ const shareAppMessage = (wx) => {
   });
 };
 
-const shareTimeLine = (wx) => {
+const shareTimeLine = (wx, appid) => {
   wx.onMenuShareTimeline({
     title: '饿肚就蓝瘦，嘴馋就香菇。我是最强小吃货，快来挑战我~',
-    link: 'http://ujoy.ramytech.com/sause-rank/',
+    link: createOauthLink('http://ujoy.ramytech.com/sause-rank/', appid),    
     imgUrl: `${__ASSET_DIR__}/sharePic.jpg`,
     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
     success: () => {
@@ -36,6 +39,9 @@ const shareTimeLine = (wx) => {
 
 export class BootState extends Phaser.State {
   init() {
+    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    this.game.scale.refresh();
+
     const userCode = getQueryStringValue('code') || '';
     // init wechat jssdk
     const currentUrl = location.href.split('#')[0];
@@ -54,8 +60,8 @@ export class BootState extends Phaser.State {
         jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ'],
       });
       wx.ready(() => {
-        shareAppMessage(wx);
-        shareTimeLine(wx);
+        shareAppMessage(wx, json.appid);
+        shareTimeLine(wx, json.appid);
       });
     });
     // add data analtics
@@ -66,23 +72,24 @@ export class BootState extends Phaser.State {
       rankData: [],
       openId: '',
     };
-    // get code
-    fetch(`${__API_ROOT__}/weixin/openid/1?code=${userCode}`)
+    // get userinfo by code
+    fetch(`${__API_ROOT__}/weixin/profile/1/code?code=${userCode}`)
     .then(response => response.json())
     .then((json) => {
       if (json.errcode) {
         return console.error('get userinfo failed', json.errmsg);
       }
-      alert(JSON.stringify(json));
-      this.game.global.openId = json.openid;
+      alert('debug user', JSON.stringify(json));
+      this.game.global.openId = json.user_id;
     });
 
     // add wechat debug
   }
   preload() {
+    this.textOffsetY = getScaleRateY(30, this.game.height);
     this.game.load.crossOrigin = __ASSET_DIR__;
     this.game.load.image('progressBar', getRamdomRequest(`${__ASSET_DIR__}/progressBar.png`));
-    const loadingLabel = this.game.add.text(this.game.width / 2, (this.game.height / 2) - 30, '正在加载...', { font: '30px Arial', fill: '#ffffff' });
+    const loadingLabel = this.game.add.text(this.game.width / 2, (this.game.height / 2) - this.textOffsetY, '正在加载中...', { font: `${this.textOffsetY}px Arial`, fill: '#ffffff' });
     loadingLabel.anchor.setTo(0.5, 0.5);
     this.game.load.image('home', getRamdomRequest(`${__ASSET_DIR__}/home.png`));
     this.game.load.spritesheet('startButton', getRamdomRequest(`${__ASSET_DIR__}/start.png`));

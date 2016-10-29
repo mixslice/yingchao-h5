@@ -1,13 +1,16 @@
-import { getRamdomRequest } from 'utils';
+import { getRamdomRequest, getScaleRateY } from 'utils';
 import moment from 'moment';
+
 
 
 export class LoadState extends Phaser.State {
   preload() {
-    const loadingLabel = this.game.add.text(this.game.width / 2, (this.game.height / 2) - 30, '正在加载游戏中...', { font: '30px Arial', fill: '#ffffff' });
+    this.textOffsetY = getScaleRateY(30, this.game.height);
+    const loadingLabel = this.game.add.text(this.game.width / 2, (this.game.height / 2) - this.textOffsetY, '正在加载中...', { font: `${this.textOffsetY}px Arial`, fill: '#ffffff' });
     loadingLabel.anchor.setTo(0.5, 0.5);
     const progressBar = this.game.add.sprite(this.game.width / 2, this.game.height / 2, 'progressBar');
     progressBar.anchor.setTo(0.5, 0.5);
+    progressBar.scale.setTo(window.devicePixelRatio, window.devicePixelRatio);
     this.game.load.setPreloadSprite(progressBar);
     this.game.load.image('playerL', getRamdomRequest(`${__ASSET_DIR__}/tigerLeft.png`));
     this.game.load.image('playerR', getRamdomRequest(`${__ASSET_DIR__}/tigerRight.png`));
@@ -31,7 +34,6 @@ export class LoadState extends Phaser.State {
     this.game.load.image('rankbar', getRamdomRequest(`${__ASSET_DIR__}/rankbar.png`));
     this.game.load.image('awardDetail', getRamdomRequest(`${__ASSET_DIR__}/awardDetail.png`));
     this.game.load.image('scoreLabel', getRamdomRequest(`${__ASSET_DIR__}/scoreLabel.png`));
-    this.game.load.image('pentacle', getRamdomRequest(`${__ASSET_DIR__}/pentacle.png`));
     this.game.load.image('picHolder', getRamdomRequest(`${__ASSET_DIR__}/picHolder.png`));
     this.game.load.image('encourageText', getRamdomRequest(`${__ASSET_DIR__}/encourageText.png`));
     this.game.load.image('pixel', getRamdomRequest(`${__ASSET_DIR__}/pixel.png`));
@@ -51,7 +53,7 @@ export class LoadState extends Phaser.State {
     this.game.load.spritesheet('share', getRamdomRequest(`${__ASSET_DIR__}/share.png`));
     this.game.load.spritesheet('shareScoreButton', getRamdomRequest(`${__ASSET_DIR__}/shareScore.png`));
     this.game.load.spritesheet('arrowButton', getRamdomRequest(`${__ASSET_DIR__}/arrow.png`));
-    document.cookie = `assetLoaded=true; expires=${moment().add(1, 'days').calendar()}`;
+    sessionStorage.setItem('assetLoaded', moment().add(1, 'days').calendar());
   }
   create() {
     this.loadingText = this.game.add.text(this.game.world.centerX,
