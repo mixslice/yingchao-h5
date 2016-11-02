@@ -1,17 +1,17 @@
-import { getRamdomRequest, getScaleRateY } from 'utils';
+import { getRamdomRequest, getScaleRateY, setPreloadSprite } from 'utils';
 import moment from 'moment';
-
 
 
 export class LoadState extends Phaser.State {
   preload() {
     this.textOffsetY = getScaleRateY(30, this.game.height);
-    const loadingLabel = this.game.add.text(this.game.width / 2, (this.game.height / 2) - this.textOffsetY, '正在加载中...', { font: `${this.textOffsetY}px Arial`, fill: '#ffffff' });
-    loadingLabel.anchor.setTo(0.5, 0.5);
-    const progressBar = this.game.add.sprite(this.game.width / 2, this.game.height / 2, 'progressBar');
-    progressBar.anchor.setTo(0.5, 0.5);
+    const progressBarBorder = this.game.add.image(this.game.width / 2, this.game.height / 2, 'loadingEmpty');
+    progressBarBorder.anchor.setTo(0.5, 1);
+    progressBarBorder.scale.setTo(window.devicePixelRatio, window.devicePixelRatio);
+    const progressBar = this.game.add.sprite(this.game.width / 2, this.game.height / 2, 'loadingFull');
+    progressBar.anchor.setTo(0.5, 1);
     progressBar.scale.setTo(window.devicePixelRatio, window.devicePixelRatio);
-    this.game.load.setPreloadSprite(progressBar);
+    setPreloadSprite(progressBar, this.game);
     this.game.load.image('playerL', getRamdomRequest(`${__ASSET_DIR__}/tigerLeft.png`));
     this.game.load.image('playerR', getRamdomRequest(`${__ASSET_DIR__}/tigerRight.png`));
     this.game.load.image('shrimp', getRamdomRequest(`${__ASSET_DIR__}/shrimp.png`));
@@ -35,8 +35,8 @@ export class LoadState extends Phaser.State {
     this.game.load.image('awardDetail', getRamdomRequest(`${__ASSET_DIR__}/awardDetail.png`));
     this.game.load.image('scoreLabel', getRamdomRequest(`${__ASSET_DIR__}/scoreLabel.png`));
     this.game.load.image('picHolder', getRamdomRequest(`${__ASSET_DIR__}/picHolder.png`));
-    this.game.load.image('encourageText', getRamdomRequest(`${__ASSET_DIR__}/encourageText.png`));
     this.game.load.image('pixel', getRamdomRequest(`${__ASSET_DIR__}/pixel.png`));
+    this.game.load.image('myPointsLabel', getRamdomRequest(`${__ASSET_DIR__}/myPointsLabel.jpg`));
 
     this.game.load.audio('successSound', getRamdomRequest(`${__ASSET_DIR__}/success.mp3`));
     this.game.load.audio('failSound', getRamdomRequest(`${__ASSET_DIR__}/fail.mp3`));
@@ -56,9 +56,6 @@ export class LoadState extends Phaser.State {
     sessionStorage.setItem('assetLoaded', moment().add(1, 'days').calendar());
   }
   create() {
-    this.loadingText = this.game.add.text(this.game.world.centerX,
-    this.game.world.height / 2, '正在加载中ing');
-    this.loadingText.anchor.setTo(0.5);
     this.game.state.start('regulation');
   }
 }

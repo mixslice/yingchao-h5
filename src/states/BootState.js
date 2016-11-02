@@ -79,7 +79,6 @@ export class BootState extends Phaser.State {
       if (json.errcode) {
         return console.error('get userinfo failed', json.errmsg);
       }
-      alert('debug user', JSON.stringify(json));
       this.game.global.openId = json.user_id;
     });
 
@@ -88,18 +87,18 @@ export class BootState extends Phaser.State {
   preload() {
     this.textOffsetY = getScaleRateY(30, this.game.height);
     this.game.load.crossOrigin = __ASSET_DIR__;
-    this.game.load.image('progressBar', getRamdomRequest(`${__ASSET_DIR__}/progressBar.png`));
-    const loadingLabel = this.game.add.text(this.game.width / 2, (this.game.height / 2) - this.textOffsetY, '正在加载中...', { font: `${this.textOffsetY}px Arial`, fill: '#ffffff' });
+    const loadingLabel = this.game.add.text(this.game.width / 2, (this.game.height / 2) - this.textOffsetY, '正在加载中...', { font: `${this.textOffsetY}px DFPHaiBaoW12`, fill: '#ffffff' });
     loadingLabel.anchor.setTo(0.5, 0.5);
     this.game.load.image('home', getRamdomRequest(`${__ASSET_DIR__}/home.png`));
     this.game.load.spritesheet('startButton', getRamdomRequest(`${__ASSET_DIR__}/start.png`));
+    this.game.load.image('loadingEmpty', getRamdomRequest(`${__ASSET_DIR__}/loadingEmpty.png`));
+    this.game.load.image('loadingFull', getRamdomRequest(`${__ASSET_DIR__}/loadingFull.png`));
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.stage.backgroundColor = __BG_COLOR__;
   }
   create() {
     // add create code
-    this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.state.start('menu');
   }
 }

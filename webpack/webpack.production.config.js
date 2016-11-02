@@ -22,7 +22,7 @@ var config = {
       __API_ROOT__: JSON.stringify(process.env.API_ROOT || 'http://lightapp.gsj987.cn'),
       __CANVAS_W__: JSON.stringify(414),
       __CANVAS_H__: JSON.stringify(736),
-      __BG_COLOR__: JSON.stringify('0x9BBC0F'),
+      __BG_COLOR__: JSON.stringify('f7d678'),
       __FG_COLOR__: JSON.stringify('0x0F380F'),
       // __ASSET_DIR__: JSON.stringify('assets'),
       __ASSET_DIR__: JSON.stringify('http://7oxin3.com1.z0.glb.clouddn.com/saucerank'),

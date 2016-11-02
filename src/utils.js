@@ -7,7 +7,7 @@ export const getScaleRateX = (rate, width) =>
 (width * rate) / 414;
 
 export const getScaleRateY = (rate, height) =>
-(height * rate) / 736;
+(height * rate) / 672;
 
 export const getRamdomRequest = (url) => {
   // if (sessionStorage.getItem('assetLoaded')) {
@@ -16,4 +16,36 @@ export const getRamdomRequest = (url) => {
   return `${url}?random=${uuid.v1()}`;
 };
 
+export const getRangeByDifficult = (difficult, initPoints, interval, limit = 300) => {
+  const start = initPoints - ((difficult - 1) * interval);
+  const end = start - interval;
+  return [start > limit ? start : limit, start > limit ? end : limit];
+};
 
+export const createCss = (fatherElement, cssText, callback) => {
+  const father = document[fatherElement] || document.getElementsByTagName(fatherElement)[0];
+  const style = document.createElement('style');
+  style.type = 'text/css';
+  if (style.styleSheet){
+    style.styleSheet.cssText = cssText;
+  } else {
+    style.appendChild(document.createTextNode(cssText));
+  }
+  style.onload = callback;
+  father.appendChild(style);
+};
+
+
+export const setPreloadSprite = (sprite, game) => {
+  const progressHeight = sprite.texture.height;
+  sprite.rect = new Phaser.Rectangle(0, progressHeight - 1, sprite.width, 1);
+  sprite.crop(sprite.rect);
+  sprite.visible = true;
+    // this.game.load.onLoadStart.add(() => console.log('start'), this);
+  game.load.onFileComplete.add((progress) => {
+    // console.log('progress', progress, progressHeight);
+    const cropHeight = Math.floor((110 / 100) * progress);
+    sprite.rect.setTo(0, 110 - cropHeight, sprite.width, cropHeight);
+    sprite.updateCrop();
+  }, this);
+};

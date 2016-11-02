@@ -1,5 +1,6 @@
 import 'isomorphic-fetch';
 import { polyfill } from 'es6-promise';
+// import { } from 'bluebird';
 
 polyfill();
 
@@ -32,6 +33,7 @@ export class ResultState extends Phaser.State {
   goToRank() {
     // post score and get game data
     const scoreFormData = new FormData();
+    console.log('score', this.game.global.score);
     scoreFormData.append('score', this.game.global.score);
     fetch(`${__API_ROOT__}/game/rank/record/1?openid=${this.game.global.openId || 'test_123'}`, {
       method: 'POST',
@@ -39,20 +41,24 @@ export class ResultState extends Phaser.State {
     })
     .then(response => response.json())
     .then((json) => {
+      console.log('json', json);
       if (json.errcode) {
+        alert('upload score failed' + json.errmsg);
         return console.error('upload score failed');
       }
-      return null;
-    })
-    .then(() => fetch(`${__API_ROOT__}/game/rank/1`))
-    .then(response => response.json())  
-    .then((json) => {
-      if (json.errcode) {
-        return console.error('upload score failed');
-      }
-      this.game.global.rankData = json || {};
-      return this.game.state.start('rank');
-    })
-    .catch(e => console.log('upload failed', e));
+
+      fetch(`${__API_ROOT__}/game/rank/1?score=${this.game.global.score || 0}`)
+      .then(response => response.json())
+      .then((json1) => {
+        if (json1.errcode) {
+          alert('get game score' + json1.errmsg);
+          console.error('upload score failed');
+          return this.game.state.start('rank');
+        }
+        this.game.global.rankData = json1 || {};
+        return this.game.state.start('rank');
+      })
+      .catch(e => alert('get game score' + e));
+    });
   }
 }

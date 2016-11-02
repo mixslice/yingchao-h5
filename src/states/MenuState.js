@@ -3,7 +3,6 @@ import { getScaleRateY } from 'utils';
 export class MenuState extends Phaser.State {
   create() {
     const home = this.game.add.image(0, 0, 'home');
-    console.log('home', home.texture);
     home.scale.setTo(this.game.width / home.texture.width, this.game.height / home.texture.height);
     // const titleLabel = this.game.add.text(this.game.width / 2, 80,
     //         '英潮', { font: '50px Arial', fill: '#ffffff' });
