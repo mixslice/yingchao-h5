@@ -7,10 +7,10 @@ polyfill();
 const createOauthLink = (link, appid) => 
 `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(link)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
 
-const shareAppMessage = (wx, appid) => {
+const shareAppMessage = (wx, appid, data = {}) => {
   wx.onMenuShareAppMessage({
-    title: '饿肚就蓝瘦，嘴馋就香菇。我是最强小吃货，快来挑战我~',
-    desc: '饿肚就蓝瘦，嘴馋就香菇。我是最强小吃货，快来挑战我~',
+    title: `没玩过这个游戏也敢自称吃货！我一口气吃了${data.beated}碗，你行吗?`,
+    desc: '我是最强小吃货，快来挑战我',
     link: createOauthLink('http://ujoy.ramytech.com/sause-rank/', appid),
     imgUrl: `${__ASSET_DIR__}/sharePic.jpg`,
     type: '', // 分享类型,music、video或link，不填默认为link
@@ -22,10 +22,10 @@ const shareAppMessage = (wx, appid) => {
   });
 };
 
-const shareTimeLine = (wx, appid) => {
+const shareTimeLine = (wx, appid, data = {}) => {
   wx.onMenuShareTimeline({
-    title: '饿肚就蓝瘦，嘴馋就香菇。我是最强小吃货，快来挑战我~',
-    link: createOauthLink('http://ujoy.ramytech.com/sause-rank/', appid),    
+    title: `没玩过这个游戏也敢自称吃货！我一口气吃了${data.beated}碗，你行吗?`,
+    link: createOauthLink('http://ujoy.ramytech.com/sause-rank/', appid),
     imgUrl: `${__ASSET_DIR__}/sharePic.jpg`,
     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
     success: () => {
@@ -41,11 +41,16 @@ export class BootState extends Phaser.State {
   init() {
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.game.scale.refresh();
-
+    this.game.global = {
+      score: 0,
+      rankData: [],
+      openId: '',
+      beated: '80%',
+    };
     const userCode = getQueryStringValue('code') || '';
     // init wechat jssdk
     const currentUrl = location.href.split('#')[0];
-    fetch(`${__API_ROOT__}/weixin/jsapi_config/1?url=${encodeURIComponent(currentUrl)}`)
+    fetch(`${__API_ROOT__}/weixin/jsapi_config/2?url=${encodeURIComponent(currentUrl)}`)
     .then(response => response.json())
     .then((json) => {
       if (json.errcode) {
@@ -60,20 +65,16 @@ export class BootState extends Phaser.State {
         jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ'],
       });
       wx.ready(() => {
-        shareAppMessage(wx, json.appid);
-        shareTimeLine(wx, json.appid);
+        shareAppMessage(wx, json.appid, this.game.global);
+        shareTimeLine(wx, json.appid, this.game.global);
       });
     });
     // add data analtics
     fetch(`${__API_ROOT__}/info/statistics/1`);
-    this.game.global = {
-      userCode,
-      score: 0,
-      rankData: [],
-      openId: '',
-    };
+
+    this.game.global.userCode = userCode;
     // get userinfo by code
-    fetch(`${__API_ROOT__}/weixin/profile/1/code?code=${userCode}`)
+    fetch(`${__API_ROOT__}/weixin/profile/2/code?code=${userCode}`)
     .then(response => response.json())
     .then((json) => {
       if (json.errcode) {

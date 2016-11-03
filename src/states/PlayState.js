@@ -1,4 +1,4 @@
-import { getScaleRateX, getScaleRateY, getRangeByDifficult } from 'utils';
+import { getScaleRateX, getScaleRateY, getRangeByDifficult, getWeightByDifficult } from 'utils';
 
 
 export class PlayState extends Phaser.State {
@@ -29,7 +29,7 @@ export class PlayState extends Phaser.State {
     const pointsBar = this.game.add.image(this.game.width - this.textOffset1Y, 20, 'pointsBar');
     pointsBar.anchor.setTo(1, 0);
     pointsBar.scale.setTo(this.halfScaleX, this.halfScaleX);
-    this.scoreLabel = this.game.add.text(pointsBar.x - this.textOffset1Y, pointsBar.y + getScaleRateY(13, this.game.height), '0',
+    this.scoreLabel = this.game.add.text(pointsBar.x - this.textOffset1Y, pointsBar.y + getScaleRateY(11, this.game.height), '0',
     { font: `${getScaleRateX(18, this.game.width)}px DFPHaiBaoW12`, fill: '#ffffff' });
     this.scoreLabel.setShadow(0, getScaleRateY(3, this.game.height), 'rgba(137,64,0,0.75)', 0);
     this.scoreLabel.stroke = '#894000';
@@ -70,7 +70,7 @@ export class PlayState extends Phaser.State {
 
     const randomDelayEnemies = this.game.rnd.integerInRange(...getRangeByDifficult(this.difficult, 1700, 240));
     this.generateFruits = this.game.time.events.loop(randomDelayFruits, this.spawnFruits, this);
-    this.generateEnemies = this.game.time.events.loop(randomDelayEnemies, this.spawnEnemies, this);
+    this.generateEnemies = this.game.time.events.add(randomDelayEnemies, this.spawnEnemies, this);
     this.game.time.events.loop(5000, this.addDifficult, this);
     // random generate enemies (todo)
   }
@@ -89,11 +89,10 @@ export class PlayState extends Phaser.State {
   // }
   addDifficult() {
     this.difficult += 1;
-    const randomDelayEnemies = this.game.rnd.integerInRange(...getRangeByDifficult(this.difficult, 1000, 50));
+    // const randomDelayEnemies = this.game.rnd.integerInRange(...getRangeByDifficult(this.difficult, 1000, 50, 200));
     const randomDelayFruits = this.game.rnd.integerInRange(...getRangeByDifficult(this.difficult, 450, 50, 130));
-
-    this.game.time.events.remove(this.generateEnemies);
-    this.generateEnemies = this.game.time.events.loop(randomDelayEnemies, this.spawnEnemies, this);
+    // this.game.time.events.remove(this.generateEnemies);
+    // this.generateEnemies = this.game.time.events.add(randomDelayEnemies, this.spawnEnemies, this);
     this.game.time.events.remove(this.generateFruits);
     this.generateFruits = this.game.time.events.loop(randomDelayFruits, this.spawnFruits, this);
   }
@@ -154,15 +153,18 @@ export class PlayState extends Phaser.State {
   }
 
   spawnEnemies() {
-    const randomWeight = this.game.rnd.integerInRange(400, 600);
+    const randomWeight = getWeightByDifficult(this.difficult, 400, 50, 1000);
+    const weight = this.game.rnd.integerInRange(...randomWeight);
     const enemy = this.game.add.sprite(10 + Math.floor(Math.random() * 1000), 0, 'bomb');
     this.enemies.add(enemy);
     enemy.scale.setTo(this.halfScaleX, this.halfScaleX);
     enemy.anchor.setTo(0.5, 0.5);
     this.game.physics.arcade.enable(enemy);
-    enemy.body.gravity.y = randomWeight;
+    enemy.body.gravity.y = weight;
     enemy.checkWorldBounds = true;
     enemy.outOfBoundsKill = true;
+    const randomDelayEnemies = this.game.rnd.integerInRange(...getRangeByDifficult(this.difficult, 1000, 50, 200));
+    this.generateEnemies = this.game.time.events.add(randomDelayEnemies, this.spawnEnemies, this);
   }
 
   takeFruit(player, fruit) {
@@ -175,7 +177,13 @@ export class PlayState extends Phaser.State {
   }
   takeBomb(player, enemy) {
     const enemyPosition = enemy.position;
-    if (enemyPosition.y < player.y - (player.texture.height * this.halfScaleX) / 2) {
+    const playerPositionLeft = player.x - (player.texture.width * this.halfScaleX) / 2;
+    const playerPositionRight = player.x + (player.texture.width * this.halfScaleX) / 2;
+    
+    if (enemyPosition.y < player.y - (player.texture.height * this.halfScaleX) / 2
+    && enemyPosition.x - playerPositionLeft >= this.textOffset1Y + 5
+    && playerPositionRight - enemyPosition.x >= this.textOffset1Y
+     ) {
       player.input.enableDrag(false);
       this.emitter.x = player.x;
       this.emitter.y = player.y - (player.texture.height * this.halfScaleX);

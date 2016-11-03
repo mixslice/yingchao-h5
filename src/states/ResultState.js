@@ -56,6 +56,7 @@ export class ResultState extends Phaser.State {
           return this.game.state.start('rank');
         }
         this.game.global.rankData = json1 || {};
+        this.game.global.beated = json1.beated;
         return this.game.state.start('rank');
       })
       .catch(e => alert('get game score' + e));

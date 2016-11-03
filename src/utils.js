@@ -13,13 +13,20 @@ export const getRamdomRequest = (url) => {
   // if (sessionStorage.getItem('assetLoaded')) {
   //   return url;
   // }
-  return `${url}?random=${uuid.v1()}`;
+  // return `${url}?random=${uuid.v1()}`;
+  return `${url}?random=8a2be49a-a1b4-11e6-80f5-76304dec7eb7`;
 };
 
 export const getRangeByDifficult = (difficult, initPoints, interval, limit = 300) => {
   const start = initPoints - ((difficult - 1) * interval);
   const end = start - interval;
   return [start > limit ? start : limit, start > limit ? end : limit];
+};
+
+export const getWeightByDifficult = (difficult, initPoints, interval, limit = 900) => {
+  const start = initPoints + ((difficult - 1) * interval);
+  const end = start - interval;
+  return [start < limit ? start : limit, start < limit ? end : limit];
 };
 
 export const createCss = (fatherElement, cssText, callback) => {
@@ -48,4 +55,11 @@ export const setPreloadSprite = (sprite, game) => {
     sprite.rect.setTo(0, 110 - cropHeight, sprite.width, cropHeight);
     sprite.updateCrop();
   }, this);
+};
+
+export const splitWords = (words = '', max) => {
+  if (words.length <= max) {
+    return words;
+  }
+  return `${words.slice(0, max)}...`;
 };

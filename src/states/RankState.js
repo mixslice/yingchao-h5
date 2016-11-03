@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
 import { polyfill } from 'es6-promise';
-import { getScaleRateX, getScaleRateY, setPreloadSprite } from 'utils';
+import { getScaleRateX, getScaleRateY, setPreloadSprite, splitWords } from 'utils';
 
 polyfill();
 
@@ -103,7 +103,7 @@ export class RankState extends Phaser.State {
       recordIndex.stroke = '#894000';
       recordIndex.strokeThickness = 6;
       recordIndex.anchor.setTo(1, 0.6);
-      const picHolder = this.game.add.image(pentacleX + (this.textOffset3X * this.biggerHalfScaleX / 2), scoreLabel.y, 'picHolder');
+      const picHolder = this.game.add.image(recordIndexX + this.textOffset1X, scoreLabel.y, 'picHolder');
       picHolder.anchor.setTo(0, 0.5);
       picHolder.scale.setTo(this.halfScaleX, this.halfScaleX);
       if (record.headimgurl && record.headimgurl.indexOf('7oxin3') > -1) { // for test
@@ -111,14 +111,14 @@ export class RankState extends Phaser.State {
         tmpRecordHead.anchor.setTo(0, 0.5);     
         tmpRecordHead.scale.setTo((picHolder.texture.width * this.halfScaleX - this.textOffset2X) / tmpRecordHead.texture.width, (picHolder.texture.height * this.halfScaleX - this.textOffset2X) / tmpRecordHead.texture.height);
       }
-      const recordTitle = this.game.add.text(picHolder.x + picHolder.texture.width + this.textOffset1X, scoreLabel.y - this.textOffset1Y, record.nickname || 'unknown',
+      const recordTitle = this.game.add.text(picHolder.x + picHolder.texture.width * this.halfScaleX + this.textOffset1Y, scoreLabel.y - this.textOffset1Y, splitWords(record.nickname || '', 6) || 'unknown',
     { font: `${getScaleRateX(18, this.game.width)}px DFPHaiBaoW12`, fill: '#ffffff' });
       recordTitle.anchor.setTo(0, 0.6);
       recordTitle.setShadow(0, getScaleRateY(2, this.game.height), 'rgba(137,64,0,0.75)', 0);
       recordTitle.stroke = '#894000';
       recordTitle.strokeThickness = 6;
       
-      const recordText = this.game.add.text(picHolder.x + picHolder.texture.width + this.textOffset1X, scoreLabel.y + this.textOffset1Y, record.score,
+      const recordText = this.game.add.text(picHolder.x + picHolder.texture.width * this.halfScaleX + this.textOffset1Y, scoreLabel.y + this.textOffset1Y, record.score,
     { font: `${getScaleRateX(18, this.game.width)}px DFPHaiBaoW12`, fill: '#ffffff' });
       recordText.anchor.setTo(0, 0.6);
       recordText.setShadow(0, getScaleRateY(2, this.game.height), 'rgba(137,64,0,0.75)', 0);
