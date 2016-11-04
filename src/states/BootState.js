@@ -1,41 +1,14 @@
 import 'isomorphic-fetch';
 import { polyfill } from 'es6-promise';
-import { getQueryStringValue, getRamdomRequest, getScaleRateY } from 'utils';
+import { getQueryStringValue,
+  getRamdomRequest,
+  getScaleRateY,
+  shareAppMessage,
+  shareTimeLine,
+  } from 'utils';
 
 polyfill();
 
-const createOauthLink = (link, appid) => 
-`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(link)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
-
-const shareAppMessage = (wx, appid, data = {}) => {
-  wx.onMenuShareAppMessage({
-    title: `没玩过这个游戏也敢自称吃货！我一口气吃了${data.beated}碗，你行吗?`,
-    desc: '我是最强小吃货，快来挑战我',
-    link: createOauthLink('http://ujoy.ramytech.com/sause-rank/', appid),
-    imgUrl: `${__ASSET_DIR__}/sharePic.jpg`,
-    type: '', // 分享类型,music、video或link，不填默认为link
-    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-    success: () => {
-    },
-    cancel: () => {
-    }
-  });
-};
-
-const shareTimeLine = (wx, appid, data = {}) => {
-  wx.onMenuShareTimeline({
-    title: `没玩过这个游戏也敢自称吃货！我一口气吃了${data.beated}碗，你行吗?`,
-    link: createOauthLink('http://ujoy.ramytech.com/sause-rank/', appid),
-    imgUrl: `${__ASSET_DIR__}/sharePic.jpg`,
-    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-    success: () => {
-      // alert('success');
-    },
-    cancel: () => {
-      // alert('cancel');
-    }
-  });
-};
 
 export class BootState extends Phaser.State {
   init() {
@@ -46,6 +19,7 @@ export class BootState extends Phaser.State {
       rankData: [],
       openId: '',
       beated: '80%',
+      appid: '',
     };
     const userCode = getQueryStringValue('code') || '';
     // init wechat jssdk
@@ -68,6 +42,7 @@ export class BootState extends Phaser.State {
         shareAppMessage(wx, json.appid, this.game.global);
         shareTimeLine(wx, json.appid, this.game.global);
       });
+      this.game.global.appid = json.appid;
     });
     // add data analtics
     fetch(`${__API_ROOT__}/info/statistics/1`);

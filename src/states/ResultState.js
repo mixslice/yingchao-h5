@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
 import { polyfill } from 'es6-promise';
-// import { } from 'bluebird';
+import { shareAppMessage, shareTimeLine } from 'utils';
 
 polyfill();
 
@@ -57,6 +57,8 @@ export class ResultState extends Phaser.State {
         }
         this.game.global.rankData = json1 || {};
         this.game.global.beated = json1.beated;
+        shareAppMessage(wx, this.game.global.appid, this.game.global);
+        shareTimeLine(wx, this.game.global.appid, this.game.global);
         return this.game.state.start('rank');
       })
       .catch(e => alert('get game score' + e));
