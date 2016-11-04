@@ -14,7 +14,7 @@ export const getRamdomRequest = (url) => {
   //   return url;
   // }
   // return `${url}?random=${uuid.v1()}`;
-  return `${url}?random=8a2be49a-a1b4-11e6-80f5-76304dec7eb7`;
+  return `${url}?random=d0879474-a25f-11e6-80f5-76304dec7eb7`;
 };
 
 export const getRangeByDifficult = (difficult, initPoints, interval, limit = 300) => {

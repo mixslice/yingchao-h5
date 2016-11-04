@@ -15,16 +15,18 @@ export class RankState extends Phaser.State {
     this.biggerHalfScaleX = getScaleRateX(0.6, this.game.width);
     this.biggerHalfScale2X = getScaleRateX(0.62, this.game.width);
     this.biggerHalfScale3X = getScaleRateX(0.7, this.game.width);
+    
     this.textOffset1X = getScaleRateX(15, this.game.width);
     this.textOffset2X = getScaleRateX(5, this.game.width);
     this.textOffset3X = getScaleRateX(74, this.game.width);
     this.textOffset4X = getScaleRateX(24, this.game.width);
     this.textOffset5X = getScaleRateX(3, this.game.width);
 
-    this.buttonOffset1X = getScaleRateX(20, this.game.width);
+    this.buttonOffset1X = getScaleRateX(15, this.game.width);
     this.textOffset1Y = getScaleRateY(10, this.game.height);
     this.textOffsetY = getScaleRateY(30, this.game.height);
     this.textOffset2Y = getScaleRateY(35, this.game.height);
+    this.textOffset3Y = getScaleRateX(35, this.game.height);
     
     this.buttonOffset2Y = getScaleRateY(60, this.game.height);
   }
@@ -64,6 +66,9 @@ export class RankState extends Phaser.State {
     const findAwardsButton = this.game.add.button(label.x + this.buttonOffset1X, (label.y + ((label.texture.height * this.biggerHalfScaleX) / 2)) - this.buttonOffset2Y, 'findAwardsButton', this.findAwards, this, 0.01, 1, 0);
     findAwardsButton.anchor.setTo(0, 0.5);
     findAwardsButton.scale.setTo(this.biggerHalfScale2X, this.biggerHalfScale2X);
+    const playAgainButton = this.game.add.button(label.x + ((label.texture.width * this.biggerHalfScaleX) / 2) - this.textOffset1X, label.y - ((label.texture.height * this.biggerHalfScaleX) / 2) + this.textOffset3Y, 'playAgain', this.startGame, this, 0.01, 1, 0);
+    playAgainButton.anchor.setTo(1, 0);
+    playAgainButton.scale.setTo(this.biggerHalfScaleX, this.biggerHalfScaleX);
     const couponButton = this.game.add.button(this.game.world.centerX, this.game.world.height * 0.92, 'couponButton', this.getCoupon, this, 0.01, 1, 0);
     couponButton.anchor.setTo(0.5, 0.5);
     couponButton.scale.setTo(this.halfScaleX, this.halfScaleX);
@@ -92,11 +97,11 @@ export class RankState extends Phaser.State {
     const newData = length > 3 ? data.slice(0, 3) : data;
     newData.forEach((record, index) => {
       const scoreLabel = this.game.add.image(this.game.world.centerX, offsetY, 'scoreLabel');
-      scoreLabel.anchor.setTo(0.5, 0.5);
-      scoreLabel.scale.setTo(this.biggerHalfScale2X, this.biggerHalfScale2X);
+      scoreLabel.anchor.setTo(0.62, 0.5);
+      scoreLabel.scale.setTo(this.biggerHalfScaleX, this.biggerHalfScaleX);
       offsetY = scoreLabel.y + ((scoreLabel.texture.height * this.biggerHalfScale2X) / 2) + this.textOffset2Y;
-      const pentacleX = this.game.world.centerX - ((scoreLabel.texture.width * this.biggerHalfScale2X) / 2) + this.textOffset4X;
-      const recordIndexX = pentacleX + (this.textOffset3X / 4) + this.textOffset5X;
+      const pentacleX = this.game.world.centerX - ((1.1 * scoreLabel.texture.width * this.biggerHalfScale2X) / 2) + this.textOffset1X;
+      const recordIndexX = pentacleX + (this.textOffset3X / 4) - this.textOffset5X;
       const recordIndex = this.game.add.text(recordIndexX, scoreLabel.y, index + 1,
     { font: `${getScaleRateX(25, this.game.width)}px DFPHaiBaoW12`, fill: '#ffffff' });
       recordIndex.setShadow(0, getScaleRateY(2, this.game.height), 'rgba(137,64,0,0.75)', 0);
@@ -124,9 +129,9 @@ export class RankState extends Phaser.State {
       recordText.setShadow(0, getScaleRateY(2, this.game.height), 'rgba(137,64,0,0.75)', 0);
       recordText.stroke = '#894000';
       recordText.strokeThickness = 6;
-      const challengeButton = this.game.add.button(scoreLabel.x + ((scoreLabel.texture.width * this.biggerHalfScale2X) / 2) - this.textOffset1X, scoreLabel.y, 'challengeButton', this.startGame, this, 0.01, 1, 0);
-      challengeButton.anchor.setTo(1, 0.5);
-      challengeButton.scale.setTo(this.biggerHalfScale3X, this.biggerHalfScale3X);
+      // const challengeButton = this.game.add.button(scoreLabel.x + ((scoreLabel.texture.width * this.biggerHalfScale2X) / 2) - this.textOffset1X, scoreLabel.y, 'challengeButton', this.startGame, this, 0.01, 1, 0);
+      // challengeButton.anchor.setTo(1, 0.5);
+      // challengeButton.scale.setTo(this.biggerHalfScale3X, this.biggerHalfScale3X);
     });
   }
   share() {

@@ -43,7 +43,7 @@ export class LoadState extends Phaser.State {
     this.game.load.audio('background', getRamdomRequest(`${__ASSET_DIR__}/background.mp3`));
     this.game.load.audio('explode', getRamdomRequest(`${__ASSET_DIR__}/explode.mp3`));
 
-
+    this.game.load.spritesheet('playAgain', getRamdomRequest(`${__ASSET_DIR__}/playAgain.png`));
     this.game.load.spritesheet('closeButton', getRamdomRequest(`${__ASSET_DIR__}/close.png`));
     this.game.load.spritesheet('shareToFriends', getRamdomRequest(`${__ASSET_DIR__}/shareToFriends.png`));
     this.game.load.spritesheet('getCoupon', getRamdomRequest(`${__ASSET_DIR__}/getCoupon.png`));
